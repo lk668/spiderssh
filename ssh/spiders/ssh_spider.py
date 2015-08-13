@@ -18,7 +18,7 @@ class SshSpider(Spider):
     
     name = 'sshspider'
 
-    #减慢爬取速度为 1s
+    #减慢爬取速度为 0.5s
     download_delay = 0.5
     allowed_domains = ['boafanx.tabboa.com'] #可以不写
 
@@ -58,7 +58,7 @@ def login(username, port):
     browser.switch_to_window(browser.window_handles[1])
     wait.until(lambda browser: browser.find_element_by_xpath("//div[@class = 'g-app-list']/ul[@class = 'clearfix']/li"))
 
-    browser.find_element_by_xpath("//div[@class = 'g-app-list']/ul[@class = 'clearfix']/li[1]/a").click()
+    browser.find_element_by_xpath("//div[@class = 'g-app-list']/ul[@class = 'clearfix']/li/a[@href = 'store.php?m=plugins&a=info&rid=r838112254&sid=19']").click()
 
     wait.until(lambda browser: browser.find_element_by_xpath("//div[@class = 'info']/div[@class = 'detail-msg']/div[@class = 'sub-tab']\
         /a[@id = 'p_config']"))
@@ -69,13 +69,16 @@ def login(username, port):
     portnum.clear()
     portnum.send_keys(port, Keys.ARROW_DOWN)
 
-    time.sleep(5)
+    time.sleep(3)
     button = browser.find_element_by_xpath("//input[@id = 'saveconfig2']").click()
 
-    time.sleep(15)
+    time.sleep(10)
     browser.find_element_by_xpath("//a[@id = 'b_url']").click()
 
     wait.until(lambda browser: browser.find_element_by_xpath("//input[@id = 'refresh']"))
-    for i in range(5):
+    for i in range(10):
         browser.find_element_by_xpath("//input[@id = 'refresh']").click()
-        time.sleep(3)
+        time.sleep(2)
+        data = browser.find_element_by_tag_name("font").text
+        if data.encode('utf-8') == "运行中":
+            break
