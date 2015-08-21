@@ -52,10 +52,13 @@ def login(username, port):
 
     wait.until(lambda browser: browser.find_element_by_xpath("//div[@id = 'content']/div[@class = 'wrap']/div[@id = 'main']\
         /div[@id = 'services']/a/span[@class = 'txt']"))
+
     browser.find_element_by_xpath("//div[@id = 'content']/div[@class = 'wrap']/div[@id = 'main']/div[@id = 'services']\
         /a/span[@class = 'txt']").click()
     print browser.window_handles
-    browser.switch_to_window(browser.window_handles[1])
+
+    browser.close()
+    browser.switch_to_window(browser.window_handles[0])
     wait.until(lambda browser: browser.find_element_by_xpath("//div[@class = 'g-app-list']/ul[@class = 'clearfix']/li"))
 
     browser.find_element_by_xpath("//div[@class = 'g-app-list']/ul[@class = 'clearfix']/li/a[@href = 'store.php?m=plugins&a=info&rid=r838112254&sid=19']").click()
@@ -82,3 +85,5 @@ def login(username, port):
         data = browser.find_element_by_tag_name("font").text
         if data.encode('utf-8') == "运行中":
             break
+    time.sleep(1)
+    browser.close()
